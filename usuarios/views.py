@@ -39,21 +39,36 @@ def login_usuario(request):
 def bienvenida(request):
     return render(request, 'mensaje.html', {'nombre': request.user.username})
 
-
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuario registrado correctamente')
-            return redirect('login')
-        else:
-            print(form.errors)  # Para depuración
-            messages.error(request, 'Ocurrió un error al registrar')
-    else:
-        form = RegistroForm()
+        first_name = request.POST['first_name'].strip()
+        last_name = request.POST['last_name'].strip()
+        email = request.POST['email'].strip()
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
 
-    return render(request, 'registro.html', {'form': form})
+        if password1 != password2:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('registro')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Este correo ya está registrado')
+            return redirect('registro')
+        
+        username = f"{first_name}_{last_name}".lower().replace(" ", "_")
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password1
+        )
+        user.save()
+        messages.success(request, 'Usuario registrado correctamente')
+        return redirect('login')
+        
+
+    return render(request, 'registro.html')
 
 class RegistroAPI(APIView):
     permission_classes = [permissions.AllowAny]
