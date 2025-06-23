@@ -1,0 +1,96 @@
+body{
+    background-color: #207837;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.registro-container{
+    background-color: #fff;
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.registro-container:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+h2{
+    text-align: center;
+    color: #207837;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input{
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #207837;
+    box-shadow: 0 0 5px rgba(32, 120, 55, 0.3);
+}
+
+button{
+    padding: 10px;
+    background-color: #207837;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover{
+    background-color: #1a5f2d;
+}
+
+.mensaje{
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.volver{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.volver a{
+    color: #207837;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.volver a:hover{
+    text-decoration: underline;
+}
+
+.logo{
+    display: block;
+    margin: 0 auto 25px auto;
+}
