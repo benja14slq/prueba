@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -69,6 +69,10 @@ def registro(request):
         
 
     return render(request, 'registro.html')
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('login')
 
 class RegistroAPI(APIView):
     permission_classes = [permissions.AllowAny]

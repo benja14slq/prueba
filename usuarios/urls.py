@@ -7,7 +7,7 @@ urlpatterns = [
     path('login/', views.login_usuario, name='login'),   # login directo
     path('registro/', views.registro, name='registro'),
     path('bienvenida/', views.bienvenida, name='bienvenida'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout/', views.cerrar_sesion, name='logout'),
     path('api/registro/', views.RegistroAPI.as_view(), name='api_registro'),
     path('api/login/', views.LoginAPI.as_view(), name='api_login'),
     path('api/bienvenida/', views.BienvenidaAPI.as_view(), name='api_bienvenida'),
