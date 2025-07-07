@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .models import PerfilUsuario
 from .forms import RegistroForm
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -9,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from .serializers import RegistroSerializer
 from rest_framework.authtoken.models import Token
+from django.db import transaction
 
 
 
@@ -41,34 +43,33 @@ def bienvenida(request):
 
 def registro(request):
     if request.method == 'POST':
-        first_name = request.POST['first_name'].strip()
-        last_name = request.POST['last_name'].strip()
-        email = request.POST['email'].strip()
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-
-        if password1 != password2:
-            messages.error(request, 'Las contraseñas no coinciden')
-            return redirect('registro')
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Este correo ya está registrado')
-            return redirect('registro')
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    user = User.objects.create_user(
+                        username=form.cleaned_data['email'],
+                        email=form.cleaned_data['email'],
+                        first_name=form.cleaned_data['first_name'],
+                        last_name=form.cleaned_data['last_name'],
+                        password=form.cleaned_data['password1']
+                    )
+                    PerfilUsuario.objects.create(
+                        usuario=user,
+                        telefono=form.cleaned_data['telefono'],
+                        rol=form.cleaned_data['rol']
+                    )
+                    messages.success(request, 'Usuario registrado correctamente')
+                    return redirect('login')
+            except Exception as e:
+                messages.error(request, f'Error: {str(e)}')
+        else:
+            messages.error(request, 'Formulario no válido')
+    else:
+        form = RegistroForm()
         
-        username = f"{first_name}_{last_name}".lower().replace(" ", "_")
-        user = User.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password1
-        )
-        user.save()
-        messages.success(request, 'Usuario registrado correctamente')
-        return redirect('login')
-        
 
-    return render(request, 'registro.html')
+    return render(request, 'registro.html', {'form': form})
 
 def cerrar_sesion(request):
     logout(request)

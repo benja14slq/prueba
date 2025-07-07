@@ -3,43 +3,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
+    <title>Registro Personalizado</title>
     <link rel="stylesheet" href="{% static 'css/registro.css' %}">
 </head>
 <body>
-    <div class="registro-container">
-        <img src="{% static 'images/innsolar_logo.png' %}" alt="Logo Innsolar" class="logo">
-        <h2>Registro de Usuario</h2>
-
-        {% if messages %}
-            {% for message in messages %}
-                <p class="mensaje">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-
-        <form method="POST">
-             {% csrf_token %}
-            <label for="first_name">Nombre:</label>
-            <input type="text" name="first_name" required>
-
-            <label for="last_name">Apellido:</label>
-            <input type="text" name="last_name" required>
-
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" name="email" required>
-
-            <label for="password1">Contraseña:</label>
-            <input type="password" name="password1" required>
-
-            <label for="password2">Confirmar Contraseña:</label>
-            <input type="password" name="password2" required>
-
-            <button type="submit">Registrarse</button>
-        </form>
-
-        <p class="volver"><a href="{% url 'login' %}">¿Tienes una cuenta? Iniciar Sesión</a></p>
-    </div>
+<div class="registro-container">
+    <h2>Registro de Usuario</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="mensaje">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrarse</button>
+    </form>
+    <p class="volver"><a href="{% url 'login' %}">Iniciar Sesión</a></p>
+</div>
 </body>
 </html>
-
 
