@@ -2,11 +2,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import PerfilUsuario
+from .models import PerfilUsuario, Rol
 from .forms import RegistroForm
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status, permissions
 from .serializers import RegistroSerializer
 from rest_framework.authtoken.models import Token
@@ -74,6 +75,11 @@ def registro(request):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
+
+@api_view(['GET'])
+def listar_roles(request):
+    roles = Rol.objects.all().values('nombre')
+    return Response(roles)
 
 class RegistroAPI(APIView):
     permission_classes = [permissions.AllowAny]
