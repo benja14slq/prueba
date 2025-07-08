@@ -48,7 +48,7 @@ def registro(request):
             try:
                 with transaction.atomic():
                     user = User.objects.create_user(
-                        username=form.cleaned_data['email'],
+                        form.cleaned_data['first_name'] + form.cleaned_data['last_name'],
                         email=form.cleaned_data['email'],
                         first_name=form.cleaned_data['first_name'],
                         last_name=form.cleaned_data['last_name'],

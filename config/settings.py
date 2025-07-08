@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool) #True 
 #config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') #['*']
+ALLOWED_HOSTS = ['*']
 #os.getenv('ALLOWED_HOSTS', '').split(',')
 
 
