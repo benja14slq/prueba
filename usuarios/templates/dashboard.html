@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plantas Huawei</title>
+</head>
+<body>
+  <h1>Datos de planta</h1>
+  <div id="plant-data">
+    Cargando datos...
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('plant-data');
+
+    fetch('/api/plant-data')
+        .then(response => {
+        if (!response.ok) throw new Error('Error en la petición: ' + response.status);
+        return response.json();
+        })
+        .then(data => {
+        const info = data.data[0].dataItemMap;
+        const html = `
+            <p>🔋 Potencia diaria: ${info.day_power ?? 'N/A'} kWh</p>
+            <p>📅 Potencia mensual: ${info.month_power ?? 'N/A'} kWh</p>
+            <p>⚡ Potencia total: ${info.total_power ?? 'N/A'} kWh</p>
+            <p>🔌 Energía utilizada hoy: ${info.day_use_energy ?? 'N/A'} kWh</p>
+        `;
+        container.innerHTML = html;
+        })
+        .catch(error => {
+        container.innerHTML = `<p style="color: red;">Error al cargar datos: ${error.message}</p>`;
+        });
+    });
+    </script>
+
+</body>
+</html>

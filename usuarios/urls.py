@@ -11,5 +11,7 @@ urlpatterns = [
     path('api/registro/', views.RegistroAPI.as_view(), name='api_registro'),
     path('api/login/', views.LoginAPI.as_view(), name='api_login'),
     path('api/bienvenida/', views.BienvenidaAPI.as_view(), name='api_bienvenida'),
-    path('api/roles/', views.listar_roles)
+    path('api/roles/', views.listar_roles),
+    path('api/plant-data/', views.get_plant_data, name='plant-data'),
+    path('dashboard/', views.dashboard_view, name='dashboard')
 ]

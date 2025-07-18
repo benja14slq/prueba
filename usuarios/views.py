@@ -12,6 +12,7 @@ from rest_framework import status, permissions
 from .serializers import RegistroSerializer
 from rest_framework.authtoken.models import Token
 from django.db import transaction
+import requests
 
 
 
@@ -117,3 +118,43 @@ class BienvenidaAPI(APIView):
 
     def get(self, request):
         return Response({'mensaje': f'Hola, {request.user.username}'})
+
+import requests
+from django.http import JsonResponse
+
+def get_plant_data(request):
+    login_url = 'https://la5.fusionsolar.huawei.com/thirdData/login'
+    data_url = 'https://la5.fusionsolar.huawei.com/thirdData/getStationRealKpi'
+
+    login_body = {
+        'userName': 'INNSOLAR_SOFT',
+        'systemCode': 'PRUEBAREV1',
+        'language': 'es'
+    }
+
+    session = requests.Session()
+    login_response = session.post(login_url, json=login_body)
+
+    if login_response.status_code != 200:
+        return JsonResponse({'error': 'Error login'}, status=login_response.status_code)
+
+    headers = {
+        'XSRF-TOKEN': session.cookies.get('XSRF-TOKEN'),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json, */*'
+    }
+
+    station_body = {
+        'stationCodes': 'NE=33885784'
+    }
+
+    data_response = session.post(data_url, headers=headers, json=station_body)
+
+    if data_response.status_code == 200:
+        return JsonResponse(data_response.json())
+    else:
+        return JsonResponse({'error': 'Error al obtener datos'}, status=data_response.status_code)
+
+
+def dashboard_view(request):
+    return render(request, 'dashboard.html')

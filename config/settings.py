@@ -138,7 +138,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATICFILES_DIRS = [
+    BASE_DIR / 'usuarios/static',  # o la ruta absoluta a la carpeta static de tu app
+]
 
 TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, 'templates')]
 
@@ -153,7 +155,8 @@ LOGOUT_REDIRECT_URL = 'login'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",           # Si estás usando frontend local
-    "http://127.0.0.1:8000",           # Para desarrollo local
+    "http://127.0.0.1:8000",            # Para desarrollo local
+    "http://192.168.1.84:8000",           
     "https://prueba-tl0z.onrender.com",  # Tu dominio en producción
     "http://localhost",                # Flutter Web local
 ]
